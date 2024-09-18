@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { db } = require('@vercel/postgres');
 const {
   invoices,
@@ -161,14 +162,20 @@ async function seedRevenue(client) {
 }
 
 async function main() {
-  const client = await db.connect();
-
+  try {
+  const client = await db.connect({
+    connectionString: process.env.POSTGRES_URL,
+  });
   await seedUsers(client);
   await seedCustomers(client);
   await seedInvoices(client);
   await seedRevenue(client);
-
+  
   await client.end();
+} catch (error) {
+  console.error('Error connecting to the database:', error);
+  throw error;
+}
 }
 
 main().catch((err) => {

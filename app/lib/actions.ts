@@ -5,6 +5,63 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth'; 
 import { AuthError } from 'next-auth';
+import { hash } from 'bcryptjs'; // for hashing passwords
+
+// Schema for registering a new user
+const RegisterSchema = z.object({
+  name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  confirmPassword: z.string().min(6),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'], // Path for the error to be displayed
+});
+
+// Registration action
+export async function registerUser(formData: FormData) {
+  // Validate the form using Zod
+  const validatedFields = RegisterSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+    confirmPassword: formData.get('confirmPassword'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Form validation failed. Please check the fields.',
+    };
+  }
+
+  const { name, email, password } = validatedFields.data;
+
+  // Check if user already exists
+  const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
+  if (existingUser.rowCount > 0) {
+    return {
+      message: 'User already exists. Please login or use another email.',
+    };
+  }
+
+  // Hash the password
+  const hashedPassword = await hash(password, 10);
+
+  // Insert the new user into the database
+  try {
+    await sql`
+      INSERT INTO users (name, email, password)
+      VALUES (${name}, ${email}, ${hashedPassword})
+    `;
+    
+    return {message: 'Account created. You will be redirected to log in page.'};
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to register user.',
+    };
+  }
+}
  
 const FormSchema = z.object({
     id: z.string(),
