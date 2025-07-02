@@ -187,3 +187,19 @@ export async function authenticate(
       throw error;
     }
   }
+
+  // Added a function to update the user image
+// This function will be called when the user uploads a new image in the settings page
+  export async function updateUserImage(userId: string, imageUrl: string) {
+  try {
+    await sql`
+      UPDATE users
+      SET image_url = ${imageUrl}
+      WHERE id = ${userId}
+    `;
+    revalidatePath('/settings'); // Re-fetch latest data on next render
+  } catch (error) {
+    console.error('Failed to update user image:', error);
+    throw new Error('Could not update user image');
+  }
+}
