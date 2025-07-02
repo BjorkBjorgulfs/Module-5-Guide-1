@@ -7,6 +7,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  image_url: string;
 };
 
 export type Customer = {

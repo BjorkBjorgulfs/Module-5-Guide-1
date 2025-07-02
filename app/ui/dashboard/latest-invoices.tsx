@@ -13,8 +13,7 @@ const latestInvoices = await fetchLatestInvoices (); // Fetch data inside the co
         Latest Invoices
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
-        {/* NOTE: comment in this code when you get to this point in the course */}
-
+        
         <div className="bg-white px-6">
           {latestInvoices.map((invoice, i) => {
             return (

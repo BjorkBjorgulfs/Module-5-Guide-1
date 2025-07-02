@@ -1,4 +1,4 @@
-import AcmeLogo from '@/app/ui/acme-logo'; // Assuming you're using the same logo component
+import AcmeLogo from '@/app/ui/acme-logo';
 import { Metadata } from 'next';
 import RegisterForm from '../ui/register-form';
 

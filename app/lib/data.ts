@@ -229,6 +229,7 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
+// I added a function to fetch a user by email, I then use it in the settings page
 export async function getUser(email: string) {
   try {
     const user = await sql`SELECT * FROM users WHERE email=${email}`;
