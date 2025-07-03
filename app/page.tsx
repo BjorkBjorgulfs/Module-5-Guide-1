@@ -19,6 +19,8 @@ export default function Page() {
               Vefskólinn
             </a>
             , made by Björk.
+            <br />
+            Please log in or register to continue.
           </p>
           <Link
             href="/login"
