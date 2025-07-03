@@ -2,6 +2,7 @@
 import { useState, useTransition } from 'react';
 import { updateUserImage } from '@/app/lib/actions';
 import {User} from '@/app/lib/definitions';
+import Image from 'next/image';
 
 export default function UserOverview({ user }: { user: User }) {
   const [imageUrl, setImageUrl] = useState(user.image_url || '');
@@ -32,7 +33,7 @@ export default function UserOverview({ user }: { user: User }) {
         <p className='text-lg font-semibold'>Profile Image</p>
 
           <div className="mt-2">
-            <img
+            <Image
               src={user.image_url}
               alt="Profile Preview"
               className="mt-2 w-32 h-32 object-cover rounded-full"
