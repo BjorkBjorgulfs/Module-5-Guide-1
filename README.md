@@ -1,6 +1,6 @@
 ## Next.js App Router Course - Starter
 
-This is a guide in module 5, I followed the Next.js app router course (https://nextjs.org/learn) and made a few small changes.
+This is a guide that Björk made in module 5, I followed the Next.js app router course (https://nextjs.org/learn) and made a few small changes.
 - Added a registation function so you can register as a new user
 - Added the customer table in the "Customer page"
 - Added a "Settings page" where the logged in user is supposed to be able to change some user settings (not completed)
